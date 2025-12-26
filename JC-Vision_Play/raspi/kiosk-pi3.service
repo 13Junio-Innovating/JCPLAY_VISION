@@ -1,0 +1,31 @@
+[Unit]
+Description=Chromium Kiosk (Pi 3) - JC Vision Play
+After=systemd-user-sessions.service display-manager.service
+Wants=graphical.target
+
+[Service]
+User=pi
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=/home/pi/.Xauthority
+Type=simple
+Restart=always
+RestartSec=3
+
+# Pi 3: usar renderização por software (swiftshader) e desabilitar aceleração de vídeo
+# Evita telas pretas causadas por problemas de EGL/KMS e decodificação VAAPI
+ExecStart=/usr/bin/chromium-browser \
+  --kiosk \
+  --noerrdialogs \
+  --disable-session-crashed-bubble \
+  --incognito \
+  --autoplay-policy=no-user-gesture-required \
+  --user-data-dir=/home/pi/.kiosk-profile \
+  --disable-gpu \
+  --disable-features=UseOzonePlatform,VaapiVideoDecoder \
+  --use-gl=swiftshader \
+  --disable-accelerated-video-decode \
+  --start-maximized \
+  "https://jc-vision-play.vercel.app/player/c5dc8d9fef4bdf859b1a887e566f5c89"
+
+[Install]
+WantedBy=graphical.target

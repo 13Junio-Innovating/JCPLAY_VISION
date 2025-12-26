@@ -1,0 +1,15 @@
+[Unit]
+Description=Chromium Kiosk - JC Vision Play
+After=network-online.target graphical.target
+Wants=network-online.target
+
+[Service]
+User=pi
+Environment=DISPLAY=:0
+Environment=XDG_RUNTIME_DIR=/run/user/1000
+Restart=always
+RestartSec=3
+ExecStart=/usr/bin/chromium-browser --kiosk --noerrdialogs --disable-session-crashed-bubble --incognito --autoplay-policy=no-user-gesture-required --enable-accelerated-video-decode --use-gl=egl --disable-pinch --disable-features=TranslateUI,ExtensionsToolbarMenu "https://jc-vision-play.vercel.app/player/c5dc8d9fef4bdf859b1a887e566f5c89"
+
+[Install]
+WantedBy=graphical.target
